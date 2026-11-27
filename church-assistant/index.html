@@ -1,248 +1,227 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Church Website Assistant — Claybird Labs</title>
-<meta name="description" content="An AI assistant for your church website that answers visitor questions about service times, programs, and recent sermons. Done-for-you setup by Claybird Labs in Kitchener–Waterloo.">
-<meta name="theme-color" content="#FDF8F4">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Church Assistant | Clay Bird Labs</title>
+<meta name="description" content="A tailored AI assistant for your church website. Answers members and visitors day or night, searches your sermon archive, and takes everyday questions off your pastor's desk. Set up for you by Clay Bird Labs.">
+<meta name="theme-color" content="#07152b">
 <link rel="canonical" href="https://claybirdlabs.com/church-assistant/">
-<meta property="og:title" content="Church Website Assistant — Claybird Labs">
-<meta property="og:description" content="An AI assistant that answers visitors for your church, trained on your own sermons. Founding church pricing: $399 setup, $29/month.">
+<meta property="og:title" content="Church Assistant | Clay Bird Labs">
+<meta property="og:description" content="Your church's own AI assistant, knowledge base and searchable sermon archive. Done-for-you setup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://claybirdlabs.com/church-assistant/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta property="og:image" content="https://claybirdlabs.com/assets/claybird-labs-logo.webp">
+<link rel="icon" href="../assets/claybird-favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../styles.css">
-<link rel="icon" type="image/svg+xml" href="../logo-mark.svg">
 <style>
-  .ca-hero{padding:72px 0 64px}
-  .ca-hero .container{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
-  .ca-hero .container>*{min-width:0}
-  .eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
-  .ca-hero h1{font-size:clamp(2.1rem,5vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin:12px 0 18px;text-wrap:balance}
-  .ca-hero p.lead{color:var(--muted);font-size:1.1rem;max-width:52ch;margin-bottom:28px}
-  .ca-actions{display:flex;gap:12px;flex-wrap:wrap}
-
-  .chat{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:12px;box-shadow:var(--shadow)}
-  .chat-head{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:10px}
-  .chat-head strong{color:var(--ink);font-weight:600}
-  .msg{max-width:86%;padding:10px 14px;border-radius:14px;font-size:.93rem}
-  .msg.v{justify-self:end;background:var(--ink);color:var(--cream);border-bottom-right-radius:4px}
-  .msg.a{background:var(--clay-pale);border-bottom-left-radius:4px}
-  .example-note{font-size:.75rem;color:var(--muted);text-align:center}
-
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-  .features>div{border-top:2px solid var(--clay);padding-top:16px;display:grid;gap:6px;align-content:start}
-  .features h3{font-size:1.05rem;font-weight:700}
-  .features p{color:var(--muted)}
-
-  .pricing{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-  .pricing>*{min-width:0}
-  .offer{background:var(--ink);color:var(--cream);border-radius:var(--radius);padding:32px;display:grid;gap:14px;box-shadow:var(--shadow-lift)}
-  .offer .badge{justify-self:start;background:var(--clay-light);color:var(--ink);font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
-  .offer h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
-  .price{font-size:3rem;font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
-  .price s{font-size:1.15rem;font-weight:500;opacity:.5;margin-left:8px}
-  .price small{font-size:1rem;font-weight:500;opacity:.75;margin-left:6px;letter-spacing:0}
-  .monthly{font-size:1.08rem;opacity:.85}
-  .offer ul{list-style:none;display:grid;gap:8px}
-  .offer li{padding-left:24px;position:relative;opacity:.85}
-  .offer li::before{content:"✓";position:absolute;left:0;color:var(--clay-light);font-weight:700}
-
-  .steps{list-style:none;display:grid;gap:22px;counter-reset:s;margin-top:24px}
-  .steps li{display:grid;grid-template-columns:40px 1fr;gap:12px}
-  .steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--clay-pale);color:var(--clay-dark);font-weight:700}
-  .steps h3{font-size:1.02rem;font-weight:700}
-  .steps p{color:var(--muted)}
-
-  .faq{display:grid;gap:22px;max-width:720px}
-  .faq h3{font-size:1.02rem;font-weight:700}
-  .faq p{color:var(--muted)}
-
-  .ss-note{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:40px}
-  .ss-note p{flex:1 1 320px;color:var(--muted)}
-  .ss-note strong{color:var(--ink)}
-
-  .email-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:8px}
-  .copy{background:transparent;border:1.5px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 14px;font:inherit;font-size:.9rem;cursor:pointer}
-  .copy:hover{border-color:var(--clay-light)}
-
-  @media (max-width:820px){
-    .ca-hero{padding:48px 0}
-    .ca-hero .container,.pricing{grid-template-columns:1fr;gap:36px}
-    .features{grid-template-columns:1fr}
-    .offer{padding:26px}
-  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-.03em;line-height:1.05}
+  .ca-hero{padding:80px 0 70px}
+  .ca-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center}
+  .ca-hero h1{font-size:clamp(2.6rem,5.4vw,4.6rem);margin:22px 0 18px}
+  .ca-hero h1 .blue{color:var(--blue)} .ca-hero h1 .orange{color:var(--orange)}
+  .lead{color:#c4d4e7;font-size:1.15rem;max-width:36rem}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+  .note{color:var(--muted);font-size:.9rem;margin-top:14px}
+  .note b{color:var(--gold)}
+  /* chat mock */
+  .chat{background:linear-gradient(160deg,#0f2a50,#081a35);border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 30px 80px #0008,0 0 70px #12b9ff1f}
+  .chat-head{display:flex;align-items:center;gap:10px;padding:6px 6px 14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+  .chat-head .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,var(--gold),var(--orange));font-size:18px}
+  .chat-head b{display:block;font-size:.95rem} .chat-head span{font-size:.78rem;color:#6be3a4}
+  .msg{max-width:86%;padding:11px 14px;border-radius:16px;margin:8px 0;font-size:.93rem;line-height:1.5}
+  .msg.u{margin-left:auto;background:linear-gradient(110deg,var(--blue2),var(--blue));color:#04122a;border-bottom-right-radius:4px;font-weight:500}
+  .msg.a{background:#ffffff10;border:1px solid var(--line);border-bottom-left-radius:4px;color:#e6f0fb}
+  .msg.a a{color:var(--blue);font-weight:600}
+  .chat-foot{margin-top:12px;font-size:.75rem;color:#6f87a5;text-align:center}
+  section.block{padding:80px 0}
+  .head{max-width:46rem;margin-bottom:38px}
+  .head p{color:var(--muted);font-size:1.05rem}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:#ffffff08;border:1px solid var(--line);border-radius:20px;padding:24px;transition:border-color .2s,transform .2s}
+  .card:hover{border-color:#12b9ff66;transform:translateY(-3px)}
+  .card .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;background:linear-gradient(140deg,#12b9ff33,#ff6a2433);margin-bottom:12px}
+  .card h3{font-size:1.2rem;margin:0 0 6px} .card p{color:var(--muted);margin:0;font-size:.95rem}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .panel{border-radius:24px;padding:30px;border:1px solid var(--line)}
+  .panel.people{background:linear-gradient(160deg,#0e2b4f,#08182f)}
+  .panel.pastor{background:linear-gradient(160deg,#2a1a10,#0d1426);border-color:#ff6a2440}
+  .panel h3{font-size:1.5rem;margin:0 0 4px} .panel .sub{color:var(--muted);margin:0 0 16px}
+  .ticks{list-style:none;padding:0;margin:0;display:grid;gap:11px}
+  .ticks li{position:relative;padding-left:24px;color:#d8e4f2}
+  .ticks li:before{content:'✓';position:absolute;left:0;font-weight:800;color:var(--blue)}
+  .panel.pastor .ticks li:before{color:var(--gold)}
+  .ticks b{color:#fff}
+  .incl{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .incl .card{display:flex;gap:16px}
+  .incl .card .ic{flex-shrink:0;margin:0}
+  .ss{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;background:linear-gradient(120deg,#0f1f4a,#0a1430);border:1px solid #e3a83b66;border-radius:24px;padding:28px 30px}
+  .ss img{width:84px;height:84px;border-radius:18px;box-shadow:0 0 0 1px #e3a83b88}
+  .ss h3{margin:0 0 4px;font-size:1.5rem} .ss p{margin:0;color:#b9c4dd}
+  .btn.gold{color:#1b1406;background:linear-gradient(135deg,#f4cf7a,#e3a83b 45%,#c48b22)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s}
+  .step{position:relative;padding:24px 20px;border-radius:18px;background:#ffffff08;border:1px solid var(--line)}
+  .step:before{counter-increment:s;content:counter(s);width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 1rem 'Space Grotesk';color:#06152b;background:linear-gradient(110deg,var(--blue),#65d7ff);margin-bottom:12px}
+  .step h3{margin:0 0 6px;font-size:1.1rem} .step p{margin:0;color:var(--muted);font-size:.93rem}
+  .price{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;border-radius:26px;padding:36px;background:radial-gradient(80% 120% at 100% 0%,#ff6a2426,transparent 60%),linear-gradient(160deg,#0f2a50,#081a35);border:1px solid #ffb32355}
+  .badge{display:inline-block;background:#ffb3231f;color:var(--gold);border:1px solid #ffb32366;border-radius:999px;padding:5px 12px;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .amt{font:700 3.6rem/1 'Space Grotesk';margin:14px 0 4px} .amt s{font-size:1.4rem;color:#6f87a5;margin-left:10px}
+  .faq details{border-top:1px solid var(--line);padding:16px 0}
+  .faq summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:14px}
+  .faq summary:after{content:'+';color:var(--blue);font-size:1.3rem;line-height:1}
+  .faq details[open] summary:after{content:'–'}
+  .faq p{color:var(--muted);margin:10px 0 0}
+  .cta{text-align:center;border-radius:28px;padding:56px 24px;background:radial-gradient(60% 100% at 50% 0%,#12b9ff2e,transparent 70%),#0b1f3d;border:1px solid var(--line)}
+  .cta p{color:var(--muted);max-width:34rem;margin:8px auto 22px}
+  @media(max-width:900px){.ca-grid,.split,.price{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.incl{grid-template-columns:1fr}.ss{grid-template-columns:1fr;text-align:center}.ss img{margin:auto}}
+  @media(max-width:600px){.cards,.steps{grid-template-columns:1fr}}
 </style>
 </head>
-<body>
+<body><div class="ambient"></div>
+<header class="nav"><div class="wrap navin">
+  <a class="brand" href="/"><img src="../assets/claybird-mascot.webp" alt="Clay Bird mascot"><span>CLAY BIRD <b>LABS</b></span></a>
+  <nav class="links" id="links"><a href="#members">For members</a><a href="#pastors">For pastors</a><a href="#included">What's included</a><a href="#pricing">Pricing</a></nav>
+  <a class="nav-cta" href="#book">Book a demo ↗</a>
+</div></header>
 
-<nav class="nav" id="nav">
-  <div class="container nav-inner">
-    <a class="brand" href="/" aria-label="Claybird Labs home">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path d="M48,30.6 L60.5,32.8 L48,34.4 Z" fill="#8C3F22"/>
-        <path d="M54,32.5 C51.5,30 45,28.5 38,29.5 C27,31 18,36 14,44 C10,49 6,53 2,59 C12,54 20,50 26,46 C32,44 40,41 46,38.5 C50.5,37.2 54,35 54,32.5 Z" fill="#B4532F"/>
-        <path d="M29,33 C25,25 23,14 25,5 C33,11 39,20 41,30 C37,34 32,35 29,33 Z" fill="#E0906A"/>
-        <circle cx="45" cy="32.2" r="1.5" fill="#FDF8F4"/>
-      </svg>
-      claybird<span class="light">&nbsp;labs</span>
-    </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="nav-links" id="navLinks">
-      <a href="/#apps">Apps</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#book">Book a demo</a>
-    </div>
+<main>
+<section class="ca-hero"><div class="wrap ca-grid">
+  <div>
+    <span class="eyebrow">Church Assistant · by Clay Bird Labs</span>
+    <h1>Your church, <span class="blue">answered</span> day or night. <span class="orange">Your pastor, freed up.</span></h1>
+    <p class="lead">A friendly AI assistant on your church website, trained only on your church: your beliefs, ministries, events and sermons. Members and visitors get answers in seconds. Your pastor and office get their time back.</p>
+    <div class="actions"><a class="btn primary" href="#book">Book a free demo →</a><a class="btn secondary" href="#included">See what's included</a></div>
+    <p class="note"><b>Founding church pricing:</b> $399 setup, then $29/month · no contract</p>
   </div>
-  <div class="progress" id="progress" aria-hidden="true"></div>
-</nav>
-
-<header class="ca-hero">
-  <div class="container">
-    <div>
-      <span class="eyebrow">For churches</span>
-      <h1>A website assistant that knows your church</h1>
-      <p class="lead">Visitors ask about service times, parking, kids programs, and what you've been preaching on. Your assistant answers right away, day or night, using your own sermons and church information.</p>
-      <div class="ca-actions">
-        <a class="btn" href="#pricing">See founding pricing <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn ghost" href="#book">Book a demo</a>
-      </div>
-    </div>
-    <div class="chat" aria-label="Example conversation with a church website assistant">
-      <div class="chat-head"><strong>Grace Community Church</strong><span>Assistant</span></div>
-      <div class="msg v">Hi, first time visiting Sunday. What time is service and is there anything for my kids?</div>
-      <div class="msg a">Welcome! Sunday service starts at 10:30. Kids ages 4 to 11 go to Kids Church after worship, and there's a nursery for little ones. Parking is behind the building off Maple St.</div>
-      <div class="msg v">What has the pastor been preaching on?</div>
-      <div class="msg a">We're in week 3 of a series through Philippians. Last Sunday was on finding joy in hard seasons, from Philippians 4.</div>
-      <p class="example-note">Example conversation for illustration</p>
-    </div>
+  <div class="chat" aria-label="Example conversation">
+    <div class="chat-head"><div class="dot">✝</div><div><b>Grace Community Assistant</b><span>● Online now</span></div></div>
+    <div class="msg u">Hi! First time visiting Sunday. What time is service, and is there anything for my kids?</div>
+    <div class="msg a">Welcome! Service starts at <b>10:30</b>. Kids 4 to 11 go to Kids Church after worship, and there's a nursery for little ones. Parking is behind the building off Maple St.</div>
+    <div class="msg u">What did Pastor say about forgiveness recently?</div>
+    <div class="msg a">On Oct 12, Pastor Dan preached <b>"Seventy Times Seven"</b> from Matthew 18. He said forgiveness is a decision before it's a feeling. <a href="#">Watch the sermon →</a></div>
+    <div class="msg u">Can someone pray for my mom? She's having surgery.</div>
+    <div class="msg a">I'm so sorry. I've sent your request privately to our prayer team, and someone will reach out. You're not alone in this.</div>
+    <div class="chat-foot">Example conversation</div>
   </div>
-</header>
+</div></section>
 
-<section class="alt">
-  <div class="container">
-    <div class="section-head">
-      <h2>Helpful to visitors. No work for your staff.</h2>
-      <p>A friendly assistant on your church website, set up and maintained for you.</p>
-    </div>
-    <div class="features">
-      <div><h3>Answers visitors</h3><p>Service times, first visit questions, location, accessibility, ministries, and events.</p></div>
-      <div><h3>Knows your sermons</h3><p>Trained on your messages so it can point people to what was preached and where to listen.</p></div>
-      <div><h3>Done for you</h3><p>We set it up and add it to your website. Your staff doesn't touch anything technical.</p></div>
-    </div>
+<div class="strip"><div class="wrap stripin">
+  <div><strong>Trained on your church</strong><span>Not generic internet answers</span></div>
+  <div><strong>Searchable sermon archive</strong><span>Every message, easy to find</span></div>
+  <div><strong>Done for you</strong><span>No technical work for your staff</span></div>
+</div></div>
+
+<section class="block" id="members"><div class="wrap">
+  <div class="head"><small>FOR MEMBERS AND VISITORS</small><h2>Help the moment someone needs it.</h2><p>Most people check your website before they ever walk through the door. The assistant greets every one of them, any hour, in plain friendly language.</p></div>
+  <div class="cards">
+    <div class="card"><div class="ic">🕙</div><h3>Service times and visits</h3><p>Times, directions, parking, what to wear, accessibility and what to expect on a first Sunday.</p></div>
+    <div class="card"><div class="ic">👨‍👩‍👧</div><h3>Kids, youth and ministries</h3><p>Nursery, Kids Church, youth group, small groups, men's and women's ministries, and how to join.</p></div>
+    <div class="card"><div class="ic">📖</div><h3>"What did Pastor say about…?"</h3><p>Members search your sermon archive by topic or verse and jump straight to the message.</p></div>
+    <div class="card"><div class="ic">🙏</div><h3>Prayer requests</h3><p>Sent privately to your prayer team or church office, never posted publicly.</p></div>
+    <div class="card"><div class="ic">📅</div><h3>Events and volunteering</h3><p>Upcoming events, sign-ups, serving teams and how to get involved.</p></div>
+    <div class="card"><div class="ic">🌍</div><h3>Many languages</h3><p>Newcomers can ask in their own language and get an answer they understand.</p></div>
   </div>
-</section>
+</div></section>
 
-<section id="pricing">
-  <div class="container pricing">
-    <div class="offer">
-      <span class="badge">10 founding churches only</span>
-      <h2>Founding church plan</h2>
-      <div class="price">$399<s>$599</s><small>setup</small></div>
-      <p class="monthly">then <strong>$29/month</strong></p>
-      <ul>
-        <li>Full setup on your existing website</li>
-        <li>Trained on your sermons and church info</li>
-        <li>Updates when your schedule or series changes</li>
-        <li>No contract, cancel anytime</li>
+<section class="block" id="pastors" style="padding-top:20px"><div class="wrap">
+  <div class="split">
+    <div class="panel people">
+      <h3>For your congregation</h3><p class="sub">A church that is easy to reach and easy to know.</p>
+      <ul class="ticks">
+        <li>Answers any time, including Saturday night before a first visit</li>
+        <li>Sermons that live on after Sunday, searchable by topic and scripture</li>
+        <li>A gentle first step for people not ready to call or walk in</li>
+        <li>Clear next steps: groups, baptism, membership, giving</li>
       </ul>
     </div>
+    <div class="panel pastor">
+      <h3>For pastors, priests and staff</h3><p class="sub">Less admin. More ministry.</p>
+      <ul class="ticks">
+        <li><b>Fewer repeat calls and emails</b> about times, parking and programs</li>
+        <li><b>Your teaching, organised</b> in one archive you can point anyone to</li>
+        <li><b>See what people are asking</b> with a monthly summary of common questions</li>
+        <li><b>Pastoral moments handed to people</b>: prayer, care and counselling go straight to your team</li>
+        <li><b>Fits your tradition</b>: it speaks the way your church speaks, from your own beliefs and wording</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="block" id="included"><div class="wrap">
+  <div class="head"><small>WHAT'S INCLUDED</small><h2>Everything set up for you.</h2><p>We build it, train it on your church, add it to your website, and keep it up to date.</p></div>
+  <div class="incl">
+    <div class="card"><div class="ic">🤖</div><div><h3>Your tailored chat assistant</h3><p>Branded with your church name and colours, on any page of your site. Works with WordPress, Squarespace, Wix and most church website builders.</p></div></div>
+    <div class="card"><div class="ic">📚</div><div><h3>Church knowledge base</h3><p>Beliefs, staff, ministries, events, FAQs and policies gathered in one place, so every answer comes from you.</p></div></div>
+    <div class="card"><div class="ic">🎙️</div><div><h3>Sermon archive</h3><p>Your past sermons from YouTube, podcasts or notes, organised and searchable by topic, series and scripture.</p></div></div>
+    <div class="card"><div class="ic">📨</div><div><h3>Prayer and contact routing</h3><p>Prayer requests, care needs and "please call me" messages go privately to the right person's email.</p></div></div>
+    <div class="card"><div class="ic">🔄</div><div><h3>Ongoing updates</h3><p>New series, changed times, special events: send us a quick note and we update the assistant.</p></div></div>
+    <div class="card"><div class="ic">📊</div><div><h3>Monthly insight</h3><p>A short summary of what visitors asked most, so you can see what your community wants to know.</p></div></div>
+  </div>
+</div></section>
+
+<section class="block" style="padding-top:10px"><div class="wrap">
+  <div class="ss">
+    <img src="https://sermon-scribe.com/img/mark-96.png" alt="Sermon Scribe">
+    <div><h3>Pair it with Sermon Scribe</h3><p>Our sermon preparation tool for pastors. Prepare scripture-first sermons in minutes, and the sermons you write can feed straight into your church assistant's archive.</p></div>
+    <a class="btn gold" href="https://sermon-scribe.com" target="_blank" rel="noopener">Visit Sermon Scribe ↗</a>
+  </div>
+</div></section>
+
+<section class="block" id="how"><div class="wrap">
+  <div class="head"><small>HOW IT WORKS</small><h2>Live on your site in about a week.</h2></div>
+  <div class="steps">
+    <div class="step"><h3>15-minute call</h3><p>We talk through what people usually ask and how you want your church to sound.</p></div>
+    <div class="step"><h3>Send your info</h3><p>Service times, ministries, beliefs, and links to your sermons. We do the rest.</p></div>
+    <div class="step"><h3>Review the answers</h3><p>You test the assistant and approve how it responds before anyone else sees it.</p></div>
+    <div class="step"><h3>Go live</h3><p>We add it to your website. Updates are a quick email away.</p></div>
+  </div>
+</div></section>
+
+<section class="block" id="pricing"><div class="wrap">
+  <div class="price">
     <div>
-      <span class="eyebrow">How setup works</span>
-      <div class="section-head" style="margin:10px 0 0"><h2>Live on your site in about a week</h2></div>
-      <ol class="steps">
-        <li><div><h3>15 minute call</h3><p>We talk through what visitors usually ask and what you want the assistant to say.</p></div></li>
-        <li><div><h3>Send your info</h3><p>Service times, ministries, and recent sermons or sermon links.</p></div></li>
-        <li><div><h3>Review and go live</h3><p>You test it and approve the answers. Then it goes on your site.</p></div></li>
-      </ol>
+      <span class="badge">10 founding churches only</span>
+      <div class="amt">$399<s>$599</s></div>
+      <p style="color:var(--muted);margin:0 0 4px">one-time setup, then <b style="color:#fff">$29/month</b> · CAD</p>
+      <p style="color:var(--muted);margin:0">No contract. Cancel any time.</p>
     </div>
+    <ul class="ticks">
+      <li>Tailored assistant on your website</li>
+      <li>Church knowledge base and sermon archive</li>
+      <li>Private prayer and contact routing</li>
+      <li>Updates whenever your schedule or series changes</li>
+      <li>Monthly summary of what people ask</li>
+    </ul>
   </div>
-</section>
+</div></section>
 
-<section class="alt">
-  <div class="container">
-    <div class="section-head"><h2>Common questions</h2></div>
-    <div class="faq">
-      <div><h3>Will it work with our website?</h3><p>Yes. It works with WordPress, Squarespace, Wix, and most church site builders.</p></div>
-      <div><h3>What if it gives a wrong answer?</h3><p>You review answers before launch, and we adjust anything that needs fixing. It can always point people to call the church office.</p></div>
-      <div><h3>Can we cancel?</h3><p>Anytime. There is no contract.</p></div>
-    </div>
-    <div class="ss-note">
-      <p><strong>Also from Claybird Labs: Sermon Scribe.</strong> An AI sermon preparation tool for pastors. Start free, and sermons you prepare there can feed your church assistant.</p>
-      <a class="btn ghost" href="https://sermon-scribe.com/" target="_blank" rel="noopener">Visit Sermon Scribe <span class="arrow" aria-hidden="true">→</span></a>
-    </div>
+<section class="block faq" style="padding-top:10px"><div class="wrap" style="max-width:860px">
+  <div class="head"><small>QUESTIONS</small><h2>Common questions</h2></div>
+  <details open><summary>Will it work with our website?</summary><p>Yes. It works with WordPress, Squarespace, Wix and most church website builders. If you don't have a website yet, ask us about that too.</p></details>
+  <details><summary>What if it gives a wrong answer?</summary><p>You review its answers before launch, and we fix anything that needs adjusting. When it isn't sure, it points people to the church office instead of guessing.</p></details>
+  <details><summary>Will it say things our church doesn't believe?</summary><p>It answers from the beliefs and wording you give us. Theological and pastoral questions are handed to your pastor or staff.</p></details>
+  <details><summary>Are prayer requests kept private?</summary><p>Yes. They go privately to the email you choose and are never shown publicly.</p></details>
+  <details><summary>Does it work for any denomination?</summary><p>Yes. Baptist, Pentecostal, Catholic, Anglican, non-denominational and more. It is built around your church, not a template.</p></details>
+  <details><summary>Can we cancel?</summary><p>Any time. There is no contract.</p></details>
+</div></section>
+
+<section class="block" id="book" style="padding-top:20px"><div class="wrap">
+  <div class="cta">
+    <small>BOOK A DEMO</small>
+    <h2>See it with your own church's information.</h2>
+    <p>Email us your church name and website. We'll set up a short demo so you can try it before you decide.</p>
+    <a class="btn primary" href="mailto:hello@claybirdlabs.com?subject=Church%20Assistant%20demo&body=Church%20name%3A%0AWebsite%3A%0ABest%20time%20to%20talk%3A">Email hello@claybirdlabs.com →</a>
   </div>
-</section>
+</div></section>
+</main>
 
-<section id="book">
-  <div class="container">
-    <div class="contact-box">
-      <h2>Want to see it on your church's site?</h2>
-      <p>Email us and we'll set up a short demo using your church's information.</p>
-      <div class="email-row">
-        <a class="mail" id="email" href="mailto:hello@claybirdlabs.com?subject=Church%20Website%20Assistant%20demo">hello@claybirdlabs.com</a>
-        <button class="copy" id="copy" type="button">Copy email</button>
-      </div>
-      <div style="margin-top:24px">
-        <a class="btn" href="mailto:hello@claybirdlabs.com?subject=Church%20Website%20Assistant%20demo">Book a demo <span class="arrow" aria-hidden="true">→</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container footer-inner">
-    <a class="brand" href="/">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <path d="M48,30.6 L60.5,32.8 L48,34.4 Z" fill="#8C3F22"/>
-        <path d="M54,32.5 C51.5,30 45,28.5 38,29.5 C27,31 18,36 14,44 C10,49 6,53 2,59 C12,54 20,50 26,46 C32,44 40,41 46,38.5 C50.5,37.2 54,35 54,32.5 Z" fill="#B4532F"/>
-        <path d="M29,33 C25,25 23,14 25,5 C33,11 39,20 41,30 C37,34 32,35 29,33 Z" fill="#E0906A"/>
-        <circle cx="45" cy="32.2" r="1.5" fill="#FDF8F4"/>
-      </svg>
-      claybird<span class="light">&nbsp;labs</span>
-    </a>
-    <div class="footer-links">
-      <a href="/#apps">Apps</a>
-      <a href="https://sermon-scribe.com/" target="_blank" rel="noopener">Sermon Scribe</a>
-      <a href="mailto:hello@claybirdlabs.com">Contact</a>
-    </div>
-    <div class="copyright">© <span id="year">2026</span> Claybird Labs · Kitchener–Waterloo, Ontario, Canada</div>
-  </div>
-</footer>
-
-<script>
-(function () {
-  document.getElementById('year').textContent = new Date().getFullYear();
-  var nav = document.getElementById('nav');
-  var progress = document.getElementById('progress');
-  function onScroll() {
-    var y = window.scrollY || 0;
-    nav.classList.toggle('scrolled', y > 8);
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-  var toggle = document.getElementById('menuToggle');
-  toggle.addEventListener('click', function () {
-    var open = !nav.classList.contains('open');
-    nav.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-  });
-  document.querySelectorAll('.nav-links a').forEach(function (a) {
-    a.addEventListener('click', function () { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
-  });
-  document.getElementById('copy').addEventListener('click', function () {
-    var btn = this, el = document.getElementById('email');
-    function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected'; }
-    try { navigator.clipboard.writeText(el.textContent).then(function () { btn.textContent = 'Copied'; }, fallback); } catch (e) { fallback(); }
-  });
-})();
-</script>
+<footer><div class="wrap foot">
+  <a class="brand" href="/"><img src="../assets/claybird-mascot.webp" alt=""><span>CLAY BIRD <b>LABS</b></span></a>
+  <nav><a href="/#apps">Apps</a><a href="https://sermon-scribe.com" target="_blank" rel="noopener">Sermon Scribe</a><a href="#pricing">Pricing</a><a href="mailto:hello@claybirdlabs.com">Contact</a></nav>
+  <p>© <span id="year"></span> Clay Bird Labs Software · Kitchener–Waterloo, Ontario, Canada</p>
+</div></footer>
+<script>document.getElementById('year').textContent=new Date().getFullYear();</script>
 </body>
 </html>
